@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrenamiento Básico de IA – Zubex®</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f1f5f9; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; font-family: 'Inter', sans-serif; }
+
+    .email-wrap { width: 100%; max-width: 600px; background: #ffffff; border-radius: 16px; overflow: hidden; border: 0.5px solid #e2e8f0; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, #1A1F8F 0%, #13177A 60%, #0E126A 100%); padding: 36px 40px; position: relative; overflow: hidden; }
+    .hero-circle1 { position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(244,166,32,0.10); pointer-events: none; }
+    .hero-circle2 { position: absolute; bottom: -60px; right: 60px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.05); pointer-events: none; }
+    .logo-zubex { font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: -1px; margin-bottom: 20px; display: inline-block; line-height: 1; }
+    .logo-zubex sup { font-size: 14px; font-weight: 500; vertical-align: super; }
+    .logo-divider { width: 48px; height: 3px; background: #F4A620; border-radius: 2px; margin-bottom: 20px; }
+    .hero h1 { color: #ffffff; font-size: 28px; font-weight: 800; line-height: 1.18; margin-bottom: 10px; }
+    .hero h1 span { color: #F4A620; }
+    .hero-sub { color: #b0b8e8; font-size: 14px; line-height: 1.6; margin-bottom: 26px; max-width: 420px; }
+    .deadline-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 30px; padding: 7px 18px; color: #fff; font-size: 13px; font-weight: 500; }
+    .deadline-chip .dot { width: 8px; height: 8px; background: #F4A620; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.3)} }
+
+    /* ── BODY ── */
+    .body { padding: 32px 40px; }
+    .intro { font-size: 14px; color: #475569; line-height: 1.7; margin-bottom: 24px; }
+    .intro strong { color: #1A1F8F; }
+
+    .name-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .name-row input { flex: 1; padding: 10px 14px; border: 0.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; color: #334155; background: #f8fafc; outline: none; transition: border-color .2s, background .2s; }
+    .name-row input:focus { border-color: #1A1F8F; background: #fff; }
+    @media (max-width: 480px) { .name-row { flex-direction: column; } }
+
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #1A1F8F; margin-bottom: 14px; }
+
+    .questions { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+    .q-item { background: #f8fafc; border-radius: 10px; padding: 14px 16px; border: 0.5px solid #e2e8f0; }
+    .q-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+    .q-num { min-width: 26px; height: 26px; background: #1A1F8F; color: #F4A620; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .q-text { font-size: 13px; color: #334155; line-height: 1.5; padding-top: 3px; }
+    .q-input { width: 100%; padding: 9px 12px; border: 0.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-family: 'Inter', sans-serif; color: #334155; background: #ffffff; resize: vertical; min-height: 70px; outline: none; line-height: 1.5; transition: border-color .2s; }
+    .q-input:focus { border-color: #1A1F8F; }
+    .q-input::placeholder { color: #94a3b8; }
+
+    .send-btn { width: 100%; padding: 14px; background: #F4A620; color: #1A1F8F; font-size: 14px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; font-family: 'Inter', sans-serif; letter-spacing: 0.3px; transition: background .2s, transform .1s; }
+    .send-btn:hover { background: #e09610; }
+    .send-btn:active { transform: scale(0.98); }
+    .send-note { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px; }
+
+    .success-msg { display: none; background: #f0fdf4; border: 0.5px solid #86efac; border-radius: 10px; padding: 16px 20px; text-align: center; color: #166534; font-size: 14px; font-weight: 500; margin-bottom: 16px; }
+
+    /* ── FOOTER ── */
+    .footer { border-top: 0.5px solid #e2e8f0; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; background: #f8fafc; }
+    .footer-logo { font-size: 15px; font-weight: 900; color: #1A1F8F; letter-spacing: -0.5px; }
+    .footer-logo sup { font-size: 8px; font-weight: 500; }
+    .footer-date { font-size: 12px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+<div class="email-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-circle1"></div>
+    <div class="hero-circle2"></div>
+    <div class="logo-zubex">zubex<sup>®</sup></div>
+    <div class="logo-divider"></div>
+    <h1>Entrenamiento<br><span>Básico de IA</span><br>para tu equipo</h1>
+    <p class="hero-sub">Queremos saber cuál es tu principal interés de entrenamiento con IA. Tu respuesta nos ayuda a diseñar una sesión útil y práctica para ti.</p>
+    <div class="deadline-chip">
+      <span class="dot"></span>
+      Fecha límite de respuesta:&nbsp;<strong style="color:#F4A620">3 de Julio</strong>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+    <p class="intro">
+      Responde las <strong>4 preguntas</strong> y presiona el botón — se abrirá tu correo con todo listo para enviar a <strong>e.calderon@zubex.com.mx</strong>.
+    </p>
+
+    <!-- Nombre y Área -->
+    <div class="name-row">
+      <input type="text" id="nombre" placeholder="Tu nombre completo" />
+      <input type="text" id="area"   placeholder="Área / Departamento" />
+    </div>
+
+    <div class="section-label">📋 &nbsp;Las 4 preguntas</div>
+
+    <div class="questions">
+
+      <div class="q-item">
+        <div class="q-header">
+          <div class="q-num">1</div>
+          <div class="q-text"><strong style="color:#1A1F8F">Nivel de familiaridad</strong> con herramientas de IA.</div>
+        </div>
+        <textarea class="q-input" id="r1" placeholder="Ej. Nunca he usado IA / La uso ocasionalmente / La uso frecuentemente…"></textarea>
+      </div>
+
+      <div class="q-item">
+        <div class="q-header">
+          <div class="q-num">2</div>
+          <div class="q-text"><strong style="color:#1A1F8F">Herramientas de AI</strong> que conoces y/o usas actualmente.</div>
+        </div>
+        <textarea class="q-input" id="r2" placeholder="Ej. ChatGPT, Copilot, Gemini, ninguna…"></textarea>
+      </div>
+
+      <div class="q-item">
+        <div class="q-header">
+          <div class="q-num">3</div>
+          <div class="q-text"><strong style="color:#1A1F8F">Prioridades del equipo:</strong> 2 o 3 tareas o procesos donde más les gustaría ahorrar tiempo o mejorar calidad.</div>
+        </div>
+        <textarea class="q-input" id="r3" placeholder="Ej. Elaborar reportes, responder correos, analizar datos…"></textarea>
+      </div>
+
+      <div class="q-item">
+        <div class="q-header">
+          <div class="q-num">4</div>
+          <div class="q-text"><strong style="color:#1A1F8F">Herramientas y materiales:</strong> qué usas diario (Excel, ERP, WhatsApp, reportes…) y 1-2 ejemplos reales para ejercicios.</div>
+        </div>
+        <textarea class="q-input" id="r4" placeholder="Ej. Excel, ERP SAP, WhatsApp. Ejemplo: reporte semanal de producción, checklist de calidad…"></textarea>
+      </div>
+
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      ✅ ¡Tu correo se abrió listo para enviar! Revisa tu cliente de correo.
+    </div>
+
+    <button class="send-btn" onclick="enviar()">Enviar mis respuestas ✉️</button>
+    <p class="send-note">Se abrirá tu cliente de correo con las respuestas listas para enviar a e.calderon@zubex.com.mx</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="footer-logo">zubex<sup>®</sup></span>
+    <span class="footer-date">Programa de Desarrollo &nbsp;•&nbsp; <strong style="color:#64748b">Julio 2026</strong></span>
+  </div>
+
+</div>
+
+<script>
+  function enviar() {
+    const nombre = document.getElementById('nombre').value.trim() || 'Sin nombre';
+    const area   = document.getElementById('area').value.trim()   || 'Sin área';
+    const r1 = document.getElementById('r1').value.trim() || '(sin respuesta)';
+    const r2 = document.getElementById('r2').value.trim() || '(sin respuesta)';
+    const r3 = document.getElementById('r3').value.trim() || '(sin respuesta)';
+    const r4 = document.getElementById('r4').value.trim() || '(sin respuesta)';
+
+    const asunto = encodeURIComponent('Interés en Entrenamiento Básico de IA – ' + nombre);
+    const cuerpo = encodeURIComponent(
+      'Buen día,\n\n' +
+      'Nombre: ' + nombre + '\n' +
+      'Área:   ' + area   + '\n\n' +
+      '────────────────────────────\n' +
+      'RESPUESTAS AL FORMULARIO\n' +
+      '────────────────────────────\n\n' +
+      '1. Nivel de familiaridad con herramientas de IA:\n' + r1 + '\n\n' +
+      '2. Herramientas de AI que conozco y/o uso:\n' + r2 + '\n\n' +
+      '3. Prioridades del equipo (tareas donde ahorrar tiempo o mejorar calidad):\n' + r3 + '\n\n' +
+      '4. Herramientas diarias y ejemplos de material de trabajo:\n' + r4 + '\n\n' +
+      '────────────────────────────\n' +
+      'Enviado desde el formulario de Zubex® – Entrenamiento IA'
+    );
+
+    window.location.href = 'mailto:e.calderon@zubex.com.mx?subject=' + asunto + '&body=' + cuerpo;
+
+    setTimeout(function() {
+      document.getElementById('successMsg').style.display = 'block';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }, 600);
+  }
+</script>
+
+</body>
+</html>
